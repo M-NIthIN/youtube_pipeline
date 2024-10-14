@@ -1,0 +1,8 @@
+rawData/
+access_pass/
+rawDataCompressed.zip
+
+codes/.env
+
+__pycache__/
+*.py[cod]
