@@ -3,6 +3,7 @@ access_pass/
 rawDataCompressed.zip
 
 codes/.env
+description.txt
 
 __pycache__/
 *.py[cod]

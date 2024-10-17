@@ -31,9 +31,15 @@ def stream_kaggle_to_s3(dataset_name, s3_bucket, rawdata_folder):
                     file_name = os.path.basename(file_info.filename)
                     file_data = z.read(file_info.filename)
 
-                    s3_key = f"{rawdata_folder}/{file_name}" # Iterate over the files in the zip
-
                     # Upload to S3
+                    if file_name.endswith('.json'):
+                        s3_key  = f"youtube/raw_reference_data/{file_name}"
+                    elif file_name.endswith('.csv'):
+                        region_Code = file_name[:2].lower()
+                        s3_key = f"youtube/raw/region={region_Code}/{file_name}"
+                    else:
+                        continue
+                    
                     s3.put_object(Bucket=s3_bucket, Key=s3_key, Body=file_data)
                     print(f"Uploaded {file_name} to s3://{s3_bucket}/{s3_key}")
 
