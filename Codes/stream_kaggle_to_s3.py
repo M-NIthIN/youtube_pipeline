@@ -3,7 +3,7 @@ import requests
 import zipfile
 import io
 import boto3
-from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_BUCKET_NAME, KAGGLE_USERNAME, KAGGLE_KEY
+from config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_BUCKET_NAME, KAGGLE_USERNAME, KAGGLE_KEY, DATASET_NAME
 
 # S3 client
 s3 = boto3.client(
@@ -13,7 +13,7 @@ s3 = boto3.client(
     region_name=AWS_REGION
 )
 
-def stream_kaggle_to_s3(dataset_name, s3_bucket, rawdata_folder):
+def stream_kaggle_to_s3(dataset_name):
     # Kaggle API endpoint
     kaggle_url = f"https://www.kaggle.com/api/v1/datasets/download/{dataset_name}"
     auth = (KAGGLE_USERNAME, KAGGLE_KEY)
@@ -40,14 +40,13 @@ def stream_kaggle_to_s3(dataset_name, s3_bucket, rawdata_folder):
                     else:
                         continue
                     
-                    s3.put_object(Bucket=s3_bucket, Key=s3_key, Body=file_data)
-                    print(f"Uploaded {file_name} to s3://{s3_bucket}/{s3_key}")
+                    s3.put_object(Bucket=S3_BUCKET_NAME, Key=s3_key, Body=file_data)
+                    print(f"Uploaded {file_name} to s3://{S3_BUCKET_NAME}/{s3_key}")
 
     except Exception as e:
         print(f"Error streaming and unzipping dataset {dataset_name} to S3: {str(e)}")
 
 if __name__ == "__main__":
     dataset_name = "datasnaek/youtube-new" 
-    rawdata_folder = "rawdata"              # Folder in S3 to store the extracted files
-    stream_kaggle_to_s3(dataset_name, S3_BUCKET_NAME, rawdata_folder)
+    stream_kaggle_to_s3(dataset_name)
 
