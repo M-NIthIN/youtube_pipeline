@@ -1,5 +1,5 @@
-from stream_to_s3 import stream_kaggle_to_s3
-from glue_crawler import create_glue_crawler, run_glue_crawler
+from stream_kaggle_to_s3 import stream_kaggle_to_s3
+from glue_crawler_manager import create_glue_crawler, run_glue_crawler
 from config import S3_BUCKET_NAME, CRAWLER_NAME, DB_NAME
 
 def main():
